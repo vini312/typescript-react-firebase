@@ -5,6 +5,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import SaveIcon from '@material-ui/icons/Save';
 import Paper from '@material-ui/core/Paper';
 import { Button, Container } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -35,18 +36,31 @@ export default function List() {
     function dataDisplay(data: any) {
         return (
             data.map((dataDoc: any) => (
-                <TableRow key={dataDoc.NO_ID_FIELD} onClick={() => updateProductHandler(dataDoc.NO_ID_FIELD)}>
+                <TableRow key={dataDoc.NO_ID_FIELD}>
                     <TableCell component="th" scope="row">{dataDoc.name}</TableCell>
                     <TableCell align="right">{dataDoc.price}</TableCell>
                     <TableCell align="right">{dataDoc.category}</TableCell>
-                    <TableCell align="right"><Button
-                        variant="contained"
-                        color="secondary"
-                        startIcon={<DeleteIcon />}
-                        onClick={() => deleteProductHandler(dataDoc.NO_ID_FIELD)}
-                    >
-                        Delete
-                    </Button>
+                    <TableCell align="right">
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            size="small"
+                            startIcon={<SaveIcon />}
+                            onClick={() => updateProductHandler(dataDoc.NO_ID_FIELD)}
+                        >
+                            Update
+                        </Button>
+                    </TableCell>
+                    <TableCell align="center">
+                        <Button
+                            variant="contained"
+                            color="secondary"
+                            size="small"
+                            startIcon={<DeleteIcon />}
+                            onClick={() => deleteProductHandler(dataDoc.NO_ID_FIELD)}
+                        >
+                            Delete
+                        </Button>
                     </TableCell>
                 </TableRow>
             )))
@@ -59,7 +73,7 @@ export default function List() {
     return (
         <div>
             <Container maxWidth="md">
-                <h1>List of products data stored</h1>
+                <h1>List of products stored on database</h1>
                 <TableContainer component={Paper}>
                     <Table className={classes.table} size="small" aria-label="a dense table">
                         <TableHead>
@@ -67,6 +81,7 @@ export default function List() {
                                 <TableCell>Product</TableCell>
                                 <TableCell align="right">Price</TableCell>
                                 <TableCell align="right">Category</TableCell>
+                                <TableCell></TableCell>
                                 <TableCell></TableCell>
                             </TableRow>
                         </TableHead>

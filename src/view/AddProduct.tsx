@@ -4,7 +4,7 @@ import { useFirestore } from 'reactfire';
 import TextField from '@material-ui/core/TextField';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { Button, Container } from '@material-ui/core';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -23,6 +23,8 @@ export default function AddProducts() {
     const classes = useStyles();
 
     const productsRef = useFirestore().collection('products');
+    
+    const history = useHistory();
 
     const [name, setName] = useState<string>();
     const [price, setPrice] = useState<number>();
@@ -57,8 +59,11 @@ export default function AddProducts() {
             price: newData.price,
             category: newData.category,
             description: newData.description
-        }).then(() => console.log("Product successfully added"))
-            .catch(e => console.log("Error adding a product: " + e))
+        }).then(() => {
+            history.push('/');
+            console.log("Product successfully added")
+        })
+            .catch(e => console.log("Error adding a product: " + e.message))
     }
 
 
@@ -68,7 +73,10 @@ export default function AddProducts() {
             price: updateData.price,
             category: updateData.category,
             description: updateData.description
-        }).then(() => console.log("Product successfully updated"))
+        }).then(() => {
+            history.push('/');
+            console.log("Product successfully updated")
+    })
             .catch(e => console.log("Error adding a product: " + e.message))
     }
 
@@ -77,8 +85,7 @@ export default function AddProducts() {
 
         let submitData: Object
 
-        if(id){
-            console.log('foi pro update')
+        if (id) {
             submitData = {
                 id: id,
                 name: name,
@@ -88,8 +95,7 @@ export default function AddProducts() {
             }
             updateProductsHandler(submitData);
         }
-        else{
-            console.log('foi pro add')
+        else {
             submitData = {
                 name: name,
                 price: price,
@@ -102,7 +108,7 @@ export default function AddProducts() {
 
     return (
         <Container maxWidth="sm">
-            {id? <h1>Update product data</h1> : <h1>Create new product</h1>}
+            {id ? <h1>Update product data</h1> : <h1>Create new product</h1>}
             <form onSubmit={submitHandler} className={classes.root} noValidate autoComplete="off">
                 <div>
                     <TextField
@@ -153,7 +159,7 @@ export default function AddProducts() {
                         onChange={(event): void => setDescription(event.target.value)}
                     />
                 </div>
-                <Button variant="contained" color="primary" type='submit'>{id? "Update Product" : "Add New Product"}</Button>
+                <Button variant="contained" color="primary" type='submit'>{id ? "Update Product" : "Add New Product"}</Button>
             </form>
         </Container>
     );
